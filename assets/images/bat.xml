@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="bat_0.png"	x="0"	y="14"	width="15"	height="12" frameX="-0" frameY="-2" frameWidth="16" frameHeight="16"/>
+	<SubTexture name="bat_1.png"	x="0"	y="0"	width="15"	height="13" frameX="-0" frameY="-2" frameWidth="16" frameHeight="16"/>
+</TextureAtlas>

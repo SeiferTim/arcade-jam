@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="player_one_down_0.png"	x="13"	y="0"	width="12"	height="15" frameX="-2" frameY="-1" frameWidth="16" frameHeight="16"/>
+	<SubTexture name="player_one_down_1.png"	x="0"	y="16"	width="12"	height="15" frameX="-3" frameY="-1" frameWidth="16" frameHeight="16"/>
+	<SubTexture name="player_one_right_0.png"	x="37"	y="0"	width="9"	height="16" frameX="-3" frameY="-0" frameWidth="16" frameHeight="16"/>
+	<SubTexture name="player_one_right_1.png"	x="0"	y="0"	width="12"	height="15" frameX="-2" frameY="-1" frameWidth="16" frameHeight="16"/>
+	<SubTexture name="player_one_up_0.png"	x="13"	y="16"	width="11"	height="15" frameX="-2" frameY="-1" frameWidth="16" frameHeight="16"/>
+	<SubTexture name="player_one_up_1.png"	x="25"	y="16"	width="11"	height="15" frameX="-3" frameY="-1" frameWidth="16" frameHeight="16"/>
+</TextureAtlas>
