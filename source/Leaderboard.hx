@@ -17,6 +17,9 @@ class Leaderboard extends FlxSubState
 	private var back:FlxSprite;
 	private var texts:Array<GameText>;
 	private var readyForRestart:Bool = false;
+#if desktop
+var gate=new desktop.Gate();
+#end
 
 	public function new(?NewScore:Array<String>)
 	{
@@ -73,7 +76,11 @@ class Leaderboard extends FlxSubState
 			texts.push(text);
 		}
 
-		text = new GameText("Press Any Key to Play Again!", GameText.COLOR_WHITE);
+		#if desktop
+text = new GameText("Enter / A: Play again\nEsc / B: Exit menu", GameText.COLOR_WHITE);
+#else
+text = new GameText("Press Any Key to Play Again!", GameText.COLOR_WHITE);
+#end
 		text.alignment = FlxTextAlign.CENTER;
 		text.screenCenter(FlxAxes.X);
 		text.y = baseY + 4;
@@ -128,6 +135,13 @@ class Leaderboard extends FlxSubState
 
 	override public function update(elapsed:Float):Void
 	{
+#if desktop
+super.update(elapsed);
+if(!readyForRestart||subState!=null||!gate.allow())return;
+if(desktop.Controls.back()||desktop.Controls.pause()){gate.reset();openSubState(new desktop.Pause(true));return;}
+if(desktop.Controls.anyConfirm()){readyForRestart=false;FlxG.switchState(()->new PlayState());}
+#else
+
 		if (readyForRestart)
 		{
 			if (FlxG.keys.anyJustPressed([ESCAPE]))
@@ -140,6 +154,8 @@ class Leaderboard extends FlxSubState
 		}
 
 		super.update(elapsed);
-	}
+	
+#end
+}
 
 }

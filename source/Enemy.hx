@@ -3,7 +3,11 @@ package;
 import axollib.CyclingSprite;
 import axollib.GraphicsCache;
 import flixel.FlxG;
+#if desktop
+import flixel.util.FlxDirectionFlags as FlxObject;
+#else
 import flixel.FlxObject;
+#end
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxTween.FlxTweenType;
@@ -19,7 +23,11 @@ class Enemy extends CyclingSprite
 	{
 		super(0, 0, null, [0xffac3232, 0xffdf7126, 0xfffbf236, 0xffd77bba], 60);
 		parent = Parent;
+		#if desktop
+		frames = GraphicsCache.loadAtlasFrames(AssetPaths.bat__png, AssetPaths.bat__xml, false, "bat");
+		#else
 		frames  = GraphicsCache.loadAtlasFrames("bat" , AssetPaths.bat__png, AssetPaths.bat__xml);
+		#end
 		animation.addByIndices("bat", "bat_", [0, 1], ".png", 8);
 		animation.play("bat");
 		baseImage = pixels.clone();

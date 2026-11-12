@@ -57,7 +57,12 @@ class PlayState extends FlxState
 		map.map.y = FlxG.height - map.fullHeight;
 		add(map.map);
 		
-		var clouds:FlxBackdrop = new FlxBackdrop(AssetPaths.clouds__png, 0, 0, true, false, 10, 0);
+		#if desktop
+var clouds:FlxBackdrop = new FlxBackdrop(AssetPaths.clouds__png, flixel.util.FlxAxes.X, 10, 0);
+clouds.scrollFactor.set(0,0);
+#else
+var clouds:FlxBackdrop = new FlxBackdrop(AssetPaths.clouds__png, 0, 0, true, false, 10, 0);
+#end
 		clouds.x = 0;
 		clouds.y = 19;
 		clouds.velocity.x = -5;
@@ -206,8 +211,16 @@ class PlayState extends FlxState
 			{
 				if (FlxG.random.bool((map.height - y + 5) * 2.5))
 				{
+#if desktop
+					var t:Int = map.map.getTileIndex(x, y);
+#else
 					var t:Int = map.map.getTile(x, y);
+#end
+#if desktop
+					map.map.setTileIndex(x, y, t + 12);
+#else
 					map.map.setTile(x, y, t + 12);
+#end
 					if (y>7)
 						spaces.push(FlxPoint.get(x, y));
 				}
@@ -236,10 +249,14 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
-		if (FlxG.keys.anyJustPressed([ESCAPE]))
+		#if desktop
+if (desktop.Controls.pause() && subState == null) {openSubState(new desktop.Pause());return;}
+#else
+if (FlxG.keys.anyJustPressed([ESCAPE]))
 		{
 			System.exit(0);
 		}
+#end
 		if (started && !gameOver)
 		{
 			gameTimer -= elapsed;
@@ -399,7 +416,11 @@ class PlayState extends FlxState
 		else if (Y + DirY < 5 || Y + DirY >= map.height)
 			return BLOCK;
 
+#if desktop
+		if (map.map.getTileIndex(X + DirX, Y + DirY) < 13)
+#else
 		if (map.map.getTile(X + DirX, Y + DirY) < 13)
+#end
 			return SOLID;
 		else
 			return EMPTY;

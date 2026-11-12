@@ -26,6 +26,9 @@ class AddScore extends FlxSubState
 	private var p2:Bool = false;
 	
 	private var readyForInput:Bool = false;
+#if desktop
+var gate=new desktop.Gate();
+#end
 	
 	private var p1CLoc:Int = 0;
 	private var p2CLoc:Int = 0;
@@ -199,9 +202,15 @@ class AddScore extends FlxSubState
 				else
 				{
 					setCursPos(1, p2CLoc);
-					p1Curs.alpha = 1;
+					#if desktop
+p2Curs.alpha = 1;
+p2Curs.y = letters[0].y + letters[0].height;
+add(p2Curs);
+#else
+p1Curs.alpha = 1;
 					p1Curs.y = letters[0].y + letters[0].height;
 					add(p1Curs);
+#end
 				}
 			}
 			
@@ -212,6 +221,12 @@ class AddScore extends FlxSubState
 	
 	private function setCursPos(Which:Int, Letter:Int):Void
 	{
+#if desktop
+var index=Letter+(Which==1&&p1?3:0);
+var cursor=Which==0?p1Curs:p2Curs;
+if(cursor!=null && index<letters.length)cursor.x=letters[index].x+(letters[index].width-cursor.width)/2;
+#else
+
 		if (Which == 0 || !p1)
 		{
 			p1Curs.x = letters[Letter].x + (letters[Letter].width / 2) - (p1Curs.width / 2);
@@ -221,7 +236,9 @@ class AddScore extends FlxSubState
 			
 			p2Curs.x = letters[Letter+3].x + (letters[Letter+3].width / 2) - (p2Curs.width / 2);
 		}
-	}
+	
+#end
+}
 	
 	private function updatePos(Value:Float):Void
 	{
@@ -241,6 +258,32 @@ class AddScore extends FlxSubState
 	
 	override public function update(elapsed:Float):Void 
 	{
+#if desktop
+super.update(elapsed);
+if(!readyForInput||subState!=null||!gate.allow())return;
+for(player in 1...3){
+ var active=player==1?p1:p2;var done=player==1?p1Done:p2Done;if(!active||done)continue;
+ var loc=player==1?p1CLoc:p2CLoc;var offset=player==2&&p1?3:0;
+ if(desktop.Controls.confirm(player)||desktop.Controls.direction(player,1)){
+  loc++;if(player==1)p1CLoc=loc;else p2CLoc=loc;
+  if(loc>=3){if(player==1){p1Done=true;p1Curs.alpha=0;}else{p2Done=true;p2Curs.alpha=0;}}
+  else setCursPos(player-1,loc);
+ }else if(desktop.Controls.direction(player,0)||desktop.Controls.direction(player,2)){
+  var letter=letters[loc+offset];var delta=desktop.Controls.direction(player,0)?1:-1;
+  letter.text=String.fromCharCode(FlxMath.wrap(letter.text.charCodeAt(0)+delta,65,90));
+ }
+}
+if((!p1||p1Done)&&(!p2||p2Done)){
+ readyForInput=false;
+ var newscores:Array<String>=[];
+ for(player in 1...3)if(player==1?p1:p2){
+  var offset=player==2&&p1?3:0;var name=letters[offset].text+letters[offset+1].text+letters[offset+2].text;
+  Saves.addScore(scores[player-1],name);newscores.push(name+":"+scores[player-1]);
+ }
+ openSubState(new Leaderboard(newscores));
+}
+#else
+
 		if (readyForInput)
 		{
 			if (p1)
@@ -347,6 +390,8 @@ class AddScore extends FlxSubState
 		}
 		
 		super.update(elapsed);
-	}
+	
+#end
+}
 	
 }

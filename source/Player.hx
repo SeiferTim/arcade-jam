@@ -43,7 +43,11 @@ class Player extends CyclingSprite
 		if (PlayerNo == 1)
 		{
 			inputs = [UP, RIGHT, DOWN, LEFT];
-			frames  = GraphicsCache.loadAtlasFrames("player-two" , AssetPaths.player_two__png, AssetPaths.player_two__xml);
+			#if desktop
+frames = GraphicsCache.loadAtlasFrames(AssetPaths.player_two__png, AssetPaths.player_two__xml, false, "player-two");
+#else
+frames  = GraphicsCache.loadAtlasFrames("player-two" , AssetPaths.player_two__png, AssetPaths.player_two__xml);
+#end
 			
 			
 		}
@@ -51,7 +55,11 @@ class Player extends CyclingSprite
 		{
 			inputs = [W, D, S, A];
 			
-			frames  = GraphicsCache.loadAtlasFrames("player-one" , AssetPaths.player_one__png, AssetPaths.player_one__xml);
+			#if desktop
+frames = GraphicsCache.loadAtlasFrames(AssetPaths.player_one__png, AssetPaths.player_one__xml, false, "player-one");
+#else
+frames  = GraphicsCache.loadAtlasFrames("player-one" , AssetPaths.player_one__png, AssetPaths.player_one__xml);
+#end
 		}
 		
 		
@@ -120,7 +128,11 @@ class Player extends CyclingSprite
 		}
 		if (!moving)
 		{
-			if (FlxG.keys.anyPressed([inputs[DDOWN]]))
+			#if desktop
+if (desktop.Controls.held(playerNo, DDOWN))
+#else
+if (FlxG.keys.anyPressed([inputs[DDOWN]]))
+#end
 			{
 				var checkTile:PlayState.CheckTileType = parent.checkAhead(Std.int((x-parent.map.map.x)/PlayState.TILESIZE), Std.int((y-parent.map.map.y)/PlayState.TILESIZE), 0, 1);
 				if (checkTile != BLOCK)
@@ -130,7 +142,11 @@ class Player extends CyclingSprite
 					FlxTween.tween(this, {y:y + PlayState.TILESIZE},  getSpeed(checkTile), {type:FlxTweenType.ONESHOT, ease:FlxEase.sineInOut, onComplete: finishMove});
 				}
 			}
-			else if (FlxG.keys.anyPressed([inputs[DUP]]))
+			#if desktop
+else if (desktop.Controls.held(playerNo, DUP))
+#else
+else if (FlxG.keys.anyPressed([inputs[DUP]]))
+#end
 			{
 				var checkTile:PlayState.CheckTileType = parent.checkAhead(Std.int((x-parent.map.map.x)/PlayState.TILESIZE), Std.int((y-parent.map.map.y)/PlayState.TILESIZE), 0, -1);
 				if (checkTile != BLOCK)
@@ -140,7 +156,11 @@ class Player extends CyclingSprite
 					FlxTween.tween(this, {y:y - PlayState.TILESIZE},  getSpeed(checkTile) , {type:FlxTweenType.ONESHOT, ease:FlxEase.sineInOut, onComplete: finishMove});
 				}
 			}
-			else if (FlxG.keys.anyPressed([inputs[DLEFT]]))
+			#if desktop
+else if (desktop.Controls.held(playerNo, DLEFT))
+#else
+else if (FlxG.keys.anyPressed([inputs[DLEFT]]))
+#end
 			{
 				var checkTile:PlayState.CheckTileType = parent.checkAhead(Std.int((x-parent.map.map.x)/PlayState.TILESIZE), Std.int((y-parent.map.map.y)/PlayState.TILESIZE), -1, 0);
 				if (checkTile != BLOCK)
@@ -150,7 +170,11 @@ class Player extends CyclingSprite
 					FlxTween.tween(this, {x:x - PlayState.TILESIZE},  getSpeed(checkTile), {type:FlxTweenType.ONESHOT, ease:FlxEase.sineInOut, onComplete: finishMove});
 				}
 			}
-			else if (FlxG.keys.anyPressed([inputs[DRIGHT]]))
+			#if desktop
+else if (desktop.Controls.held(playerNo, DRIGHT))
+#else
+else if (FlxG.keys.anyPressed([inputs[DRIGHT]]))
+#end
 			{
 				var checkTile:PlayState.CheckTileType = parent.checkAhead(Std.int((x-parent.map.map.x)/PlayState.TILESIZE), Std.int((y-parent.map.map.y)/PlayState.TILESIZE), 1, 0);
 				if (checkTile != BLOCK)
@@ -191,12 +215,20 @@ class Player extends CyclingSprite
 	{
 		moving = false;
 		parent.checkOverlap(this);
+#if desktop
+		var tID:Int = parent.map.map.getTileIndex(Std.int((x-parent.map.map.x) /PlayState.TILESIZE), Std.int((y-parent.map.map.y) /PlayState.TILESIZE));
+#else
 		var tID:Int = parent.map.map.getTile(Std.int((x-parent.map.map.x) /PlayState.TILESIZE), Std.int((y-parent.map.map.y) /PlayState.TILESIZE));
+#end
 		if (tID < 13)
 		{
 			if (!isSuper)
 				FlxG.sound.play(FlxG.random.bool() ? AssetPaths.digSound01__wav : AssetPaths.digSound02__wav, .5);
+#if desktop
+			parent.map.map.setTileIndex(Std.int((x-parent.map.map.x) / PlayState.TILESIZE), Std.int((y-parent.map.map.y) / PlayState.TILESIZE), tID+12, true);
+#else
 			parent.map.map.setTile(Std.int((x-parent.map.map.x) / PlayState.TILESIZE), Std.int((y-parent.map.map.y) / PlayState.TILESIZE), tID+12, true);
+#end
 		}
 		
 	}

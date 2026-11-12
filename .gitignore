@@ -1,1 +1,7 @@
 export/
+
+.haxelib/
+ci-dependency/
+candidate/
+diagnostics/
+.hxcpp-cache/

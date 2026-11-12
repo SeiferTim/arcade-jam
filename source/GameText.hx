@@ -2,7 +2,11 @@ package;
 
 import flixel.FlxG;
 import flixel.graphics.frames.FlxBitmapFont;
+#if desktop
+import desktop.StableBitmapText as FlxBitmapText;
+#else
 import flixel.text.FlxBitmapText;
+#end
 import flixel.util.FlxColor;
 
 class GameText extends FlxBitmapText 

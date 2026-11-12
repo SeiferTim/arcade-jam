@@ -5,13 +5,20 @@ class Saves
 {
 
 	public static var save:FlxSave;
+	#if arcade_smoke
+	static var smokeSaveName = "fossil-arcade-smoke-" + Sys.getEnv("FOSSIL_TEST_DEVICE") + "-" + Std.string(Date.now().getTime());
+	#end
 	
 	public static var hiscores:Array<String>;
 	
 	public static function init():Void
 	{
 		save = new FlxSave();
+		#if arcade_smoke
+		save.bind(smokeSaveName);
+		#else
 		save.bind("axol-fossil-finders-hiscores");
+		#end
 		hiscores = [];
 		if (save.data.hiscores != null)
 			hiscores = cast save.data.hiscores.copy();
