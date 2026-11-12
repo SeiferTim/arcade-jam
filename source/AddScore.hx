@@ -277,7 +277,7 @@ if((!p1||p1Done)&&(!p2||p2Done)){
  readyForInput=false;
  var newscores:Array<String>=[];
  for(player in 1...3)if(player==1?p1:p2){
-  var offset=player==2&&p1?3:0;var name=letters[offset].text+letters[offset+1].text+letters[offset+2].text;
+  var offset=player==2&&p1?3:0;var name:String=Std.string(letters[offset].text)+Std.string(letters[offset+1].text)+Std.string(letters[offset+2].text);
   Saves.addScore(scores[player-1],name);newscores.push(name+":"+scores[player-1]);
  }
  openSubState(new Leaderboard(newscores));

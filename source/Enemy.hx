@@ -46,7 +46,11 @@ class Enemy extends CyclingSprite
 		{
 			// move in a random direction - if it's not blocked...
 			
+			#if desktop
+			var dir:Array<flixel.util.FlxDirectionFlags> = [];
+			#else
 			var dir:Array<Int> = [];
+			#end
 			if (parent.checkAhead(Std.int((x - parent.map.map.x) / PlayState.TILESIZE), Std.int((y - parent.map.map.y) / PlayState.TILESIZE), 0, 1) == EMPTY)
 			{
 				dir.push(FlxObject.DOWN);
