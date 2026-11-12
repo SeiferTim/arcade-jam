@@ -29,6 +29,7 @@
 
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
+	<haxeflag name="--macro" value="desktop.DesktopCompatibility.install()" if="desktop" />
 	<classpath name="tests/native" if="arcade_smoke" />
 	<assets path="assets" embed="true" />
 

@@ -66,10 +66,18 @@ class Saves
 	
 	public static function addScore(Score:Int, Name:String):Void
 	{
+		#if desktop
+		var capacity = hiscores.length;
+		hiscores.push(Name + ":" + Std.string(Score));
+		sort();
+		while (hiscores.length > capacity) hiscores.pop();
+		saveScores();
+		#else
 		sort();
 		hiscores.pop();
 		hiscores.push(Name + ":" + Std.string(Score));
 		saveScores();
+		#end
 	}
 	
 	
