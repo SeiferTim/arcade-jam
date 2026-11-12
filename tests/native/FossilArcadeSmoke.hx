@@ -11,6 +11,7 @@ class FossilArcadeSmoke extends TitleState {
   try{super.create();d.prepare();}catch(e:Dynamic)d.fail(Std.string(e));
  }
 }
+@:access(axollib.CyclingSprite)
 @:access(TitleState)
 @:access(AddScore)
 @:access(Leaderboard)
@@ -32,6 +33,11 @@ private class FossilSmokeDriver extends FlxBasic {
   // Make qualification fixtures deterministic without touching normal saves.
   Saves.hiscores=[for(i in 0...10)"OLD:"+(1000+i)];Saves.saveScores();
   for(color in 0...4){var t=new GameText("AB 123",color);require(t.width>0&&t.height>0,"bitmap font first layout "+color);t.text="A\nB";require(t.height>0,"multiline bitmap bounds");t.destroy();}
+  var cycling=new axollib.CyclingSprite(0,0,null,[0xffff0000,0xff0000ff],0);
+  cycling.makeGraphic(1,1,0xffff0000);cycling.baseImage=cycling.pixels.clone();cycling.currentIndex=1;
+  cycling.pixels.setPixel32(0,0,0xff0000ff);cycling.draw();
+  require(cycling.pixels.getPixel32(0,0)==0xffff0000&&cycling.currentIndex==0,"disabled cycling restores base palette");cycling.destroy();
+  mark("cycling sprite null startup and disabled palette restoration");
   mark("fullscreen, isolated score fixture, four bitmap fonts and two-pad assignment");FlxG.autoPause=false;FlxG.signals.postUpdate.add(step);
  }
  function mark(s:String):Void checks.push(s);

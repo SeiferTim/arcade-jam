@@ -19,7 +19,11 @@ class DesktopCompatibility {
    case FFun(fn):
     if(f.name=="new")fn.expr=safe(fn.expr);
     if(f.name=="draw") {var body=fn.expr;fn.expr=macro {
-     if(changeRate<=0||colors==null||colors.length==0||baseImage==null){super.draw();return;}
+     if(colors==null||colors.length==0||baseImage==null){super.draw();return;}
+     if(changeRate<=0){
+      if(currentIndex!=0 && pixels!=null){pixels.copyPixels(baseImage,baseImage.rect,new openfl.geom.Point());currentIndex=0;dirty=true;}
+      super.draw();return;
+     }
      $body;
     };}
    default:
